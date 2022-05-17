@@ -22,14 +22,34 @@ app.get("/api/get", (req,res) => {
     });
 });
 
-app.get("/",(req, res) => {
-    // const sqlInsert = "INSERT INTO contact_db (name, email, contact) VALUES ('koketso', 'koki@gmail.com', '0715456971')";
-    // db.query(sqlInsert, (err, result) => {
-    //     console.log("error", err);
-    //     console.log("results", result);
-    //     res.send("hey i am successful");
-    // });
+app.post("/api/post", (req,res) => {
+    const {name, email, contact} = req.body;
+    const sqlInsert = "INSERT INTO contact_db (name, email, contact) VALUES (?,?,?)";
+    db.query(sqlInsert, [name, email, contact], (err, result)=> {
+        if(err) {
+            console.log(err);
+        }
+    });
 });
+
+app.delete("/api/delete/:id", (req,res) => {
+    const { id } = req.params;
+    const sqlDelete = "DELETE FROM contact_db WHERE id = ?";
+    db.query(sqlDelete, id, (err, result)=> {
+        if(err) {
+            console.log(err);
+        }
+    });
+});
+
+// app.get("/",(req, res) => {
+//     // const sqlInsert = "INSERT INTO contact_db (name, email, contact) VALUES ('koketso', 'koki@gmail.com', '0715456971')";
+//     // db.query(sqlInsert, (err, result) => {
+//     //     console.log("error", err);
+//     //     console.log("results", result);
+//     //     res.send("hey i am successful");
+//     // });
+// });
 
 app.listen(5000, () => {
     console.log("server running on port 5000");
